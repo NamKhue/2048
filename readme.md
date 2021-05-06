@@ -6,3 +6,5 @@ Some word:
 
 - All functions about SDL draw from internets
 - This is developed game version
+
+- update
