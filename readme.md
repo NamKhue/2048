@@ -4,6 +4,4 @@
 
 - another line
 
-- third line
-
 - update
