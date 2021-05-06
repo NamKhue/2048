@@ -1,6 +1,5 @@
 #include "draw.h"
 
-
 #include <SDL.h>
 #include <SDL_main.h>
 
@@ -77,16 +76,16 @@ void drawPoint(SDL_Surface *screen, int X, int Y, int width, const char *number,
 	drawString(screen, (X + width / 2) - length * 4, Y + width / 2, number, char_pic);
 }
 
-int get_power(int x)
- {
- 	int n = 0;
- 	while (x)
- 	{
- 		x /= 2;
- 		n++;
- 	}
- 	return n;
- }
+// int get_power(int x)
+// {
+//  	int n = 0;
+//  	while (x)
+//  	{
+//  		x /= 2;
+//  		n++;
+//  	}
+//  	return n;
+// }
 
 //draw board with all block and points
 void drawBoard(SDL_Surface *screen, int **tab, int size, Uint32 outlineColor, Uint32 fillColor, SDL_Surface *char_pic)
@@ -101,7 +100,7 @@ void drawBoard(SDL_Surface *screen, int **tab, int size, Uint32 outlineColor, Ui
 			X = 1.5 * BOARD_X + (BOARD_WIDTH / size) * i;
 			Y = 1.5 * BOARD_Y + (BOARD_WIDTH / size) * j;
 
-            int color_power = get_power(tab[i][j]);
+			// int color_power = get_power(tab[i][j]);
 
 			drawRectangle(screen, Y, X, width, width, outlineColor, fillColor);
 			// SDL_MapRGB(screen->format, 130, 120, 160 + 10 * color_power)
