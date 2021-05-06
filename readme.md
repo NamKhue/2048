@@ -4,5 +4,5 @@ A mini game for mid-term project in my VNU/UET/INT2215 class
 
 Some word:
 
-- All functions about SDL draw from internets
+- All draw functions involving SDL from internet
 - This is developed game version
