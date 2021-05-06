@@ -1,7 +1,7 @@
-# This is my 2048 game!
+# This is my 2048 game
 
-- second commit
+A mini game for mid-term project in my VNU/UET/INT2215 class
 
-- another line
-
-- update
+Some word:
+- All functions about SDL draw from internets
+- This is developed game version
