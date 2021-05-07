@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <string>
 
-//move points in any direction
+//move to any direction
 void rushTop(int **&tab, int size)
 {
 	for (int i = 1; i < size; i++)
