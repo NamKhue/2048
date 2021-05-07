@@ -19,7 +19,7 @@ Some words:
 Download folder zip, then open with CodeBlocks:
 ----------------
 - open folder to choose '2048_demo.cbp'
-- run to play
+- build and run 'main.cpp' to play
 
 Instruction:
 ----------------
@@ -29,7 +29,7 @@ Instruction:
 
 Functions:
 ----------------
-- In 'move.cpp' file:
+- In 'move.cpp':
   - rush... funcs to push all blocks to one direction
   - move... funcs to plus similar blocks
   - copyTab() for undo thing
