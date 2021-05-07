@@ -24,6 +24,13 @@ Download folder zip, then open with CodeBlocks:
 Instruction:
 ----------------
 - Plugin: SDL2
-- Choose custom size
 - Using arrows to move
-- Features: continue playing, undo one move, rankings 
+- Features: choose custom size, continue playing, undo one move, rankings 
+
+Functions:
+----------------
+- In 'move.cpp' file:
+  - rush... funcs to push all blocks to one direction
+  - move... funcs to plus similar blocks
+  - copyTab() for undo thing
+- The rest was commented in code
