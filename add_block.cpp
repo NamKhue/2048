@@ -1,7 +1,6 @@
 #include "add_block.h"
 #include "check_put.h"
 
-
 #include <SDL.h>
 #include <SDL_main.h>
 
@@ -28,7 +27,7 @@ bool checkToRandom(int **&tab, int **&backTab, int size)
 	return can_put;
 }
 
-//get point on random place in board
+//add value 2 or 4 in a random place on board
 void randomOnBoard(int **&tab, int size)
 {
 	if (checkPut(tab, size))
