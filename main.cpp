@@ -98,6 +98,10 @@ int main(int argc, char *argv[])
     int white = SDL_MapRGB(screen->format, 255, 255, 255);
     int lavender = SDL_MapRGB(screen->format, 230, 230, 250);
     int cornFlowerBlue = SDL_MapRGB(screen->format, 100, 149, 237);
+    int pink = SDL_MapRGB(screen->format, 242, 82, 135);
+    int green = SDL_MapRGB(screen->format, 40, 181, 181);
+    int orange = SDL_MapRGB(screen->format, 247, 164, 64);
+    int red = SDL_MapRGB(screen->format, 240, 89, 69);
 
     tab = createTab(size);
     backtab = createTab(size);
@@ -122,38 +126,42 @@ int main(int argc, char *argv[])
 
             SDL_FillRect(screen, NULL, lavender);
 
-            drawRectangle(screen, 4, 5, SCREEN_WIDTH - 4, 260, white, cornFlowerBlue);
-            sprintf(text, "   2222222222222         000000000            444444444       888888888     ");
+            drawRectangle(screen, 2, 18, 165, 236, white, orange);
+            drawRectangle(screen, 166, 18, 162, 236, white, pink);
+            drawRectangle(screen, 327, 18, 153, 236, white, green);
+            drawRectangle(screen, 479, 18, 157, 236, white, red);
+
+            sprintf(text, "   2222222222222          000000000             444444444        888888888     ");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 20, text, char_pic);
-            sprintf(text, " 2              22     00         00         4        4     88         88   ");
+            sprintf(text, " 22             22      00         00          4        4      88         88   ");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 35, text, char_pic);
-            sprintf(text, "22     22222      2  00             00      4         4   88             88 ");
+            sprintf(text, "22     22222      2   00             00       4         4    88             88 ");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 50, text, char_pic);
-            sprintf(text, "2222222     2     2 0       000       0    4    44    4  8       888       8");
+            sprintf(text, "2222222     2     2  0       000       0     4    44    4   8       888       8");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 65, text, char_pic);
-            sprintf(text, "            2     2 0      0   0      0   4    4 4    4  8     8     8     8");
+            sprintf(text, "            2     2  0      0   0      0    4    4 4    4   8     8     8     8");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 80, text, char_pic);
-            sprintf(text, "            2     2 0     0     0     0  4    4  4    4  8     8     8     8");
+            sprintf(text, "            2     2  0     0     0     0   4    4  4    4   8     8     8     8");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 95, text, char_pic);
-            sprintf(text, "         222     2  0     0     0     0 4    4   4    4   8      888      8 ");
+            sprintf(text, "         222     2   0     0     0     0  4    4   4    4    8      888      8 ");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 110, text, char_pic);
-            sprintf(text, "    22222      22   0     0     0     04    444444    444  8             8  ");
+            sprintf(text, "    22222      22    0     0     0     0 4    444444    444   8             8  ");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 125, text, char_pic);
-            sprintf(text, "  22        222     0     0     0     04                4 8      888      8 ");
+            sprintf(text, "  22        222      0     0     0     0 4                4  8      888      8 ");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 140, text, char_pic);
-            sprintf(text, " 2     22222        0     0     0     04444444444     4448     8     8     8");
+            sprintf(text, " 2     22222         0     0     0     0 4444444444     444 8     8     8     8");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 155, text, char_pic);
-            sprintf(text, "2     2             0     0     0     0          4    4  8     8     8     8");
+            sprintf(text, "2     2              0     0     0     0           4    4   8     8     8     8");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 170, text, char_pic);
-            sprintf(text, "2     2             0      0   0      0          4    4  8     8     8     8");
+            sprintf(text, "2     2              0      0   0      0           4    4   8     8     8     8");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 185, text, char_pic);
-            sprintf(text, "2     2       2222220       000       0          4    4  8       888       8");
+            sprintf(text, "2     2       222222 0       000       0           4    4   8       888       8");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 200, text, char_pic);
-            sprintf(text, "2      2222222     2 00             00         44      44 88             88 ");
+            sprintf(text, "2     222222222    2  00             00          44      44  88             88 ");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 215, text, char_pic);
-            sprintf(text, "2                  2   00         00           4        4   88         88   ");
+            sprintf(text, "2                  2    00         00            4        4    88         88   ");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 230, text, char_pic);
-            sprintf(text, "22222222222222222222     000000000             4444444444     888888888     ");
+            sprintf(text, "22222222222222222222      000000000              4444444444      888888888     ");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 245, text, char_pic);
 
             drawRectangle(screen, 100, 270, SCREEN_WIDTH - 200, 50, white, cornFlowerBlue);
