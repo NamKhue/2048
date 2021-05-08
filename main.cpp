@@ -92,7 +92,6 @@ int main(int argc, char *argv[])
     init();
     initBg();
     loadImg();
-
     SDL_SetColorKey(char_pic, true, 0x000000);
 
     //declare
@@ -168,7 +167,7 @@ int main(int argc, char *argv[])
             sprintf(text, "2     2              0     0     0     0           4    4   8     8     8     8");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 170, text, char_pic);
             sprintf(text, "2     2              0      0   0      0           4    4   8     8     8     8");
-            drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 /  2, 185, text, char_pic);
+            drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 185, text, char_pic);
             sprintf(text, "2     2       222222 0       000       0           4    4   8       888       8");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 200, text, char_pic);
             sprintf(text, "2     222222222    2  00             00          44      44  88             88 ");
@@ -188,9 +187,9 @@ int main(int argc, char *argv[])
             sprintf(text, "Size: %d", size);
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 4, SCREEN_HEIGHT / 2 + 100, text, char_pic);
 
-            drawRectangle(screen, 270, SCREEN_HEIGHT / 2 + 125, 100, 36, white, cornFlowerBlue);
-            sprintf(text, "Continue");
-            drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 4, SCREEN_HEIGHT / 2 + 140, text, char_pic);
+            // drawRectangle(screen, 270, SCREEN_HEIGHT / 2 + 125, 100, 36, white, cornFlowerBlue);
+            // sprintf(text, "Continue");
+            // drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 4, SCREEN_HEIGHT / 2 + 140, text, char_pic);
 
             while (SDL_PollEvent(&event))
             {
@@ -203,14 +202,8 @@ int main(int argc, char *argv[])
                         size++;
                     else if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s)
                         size--;
-                    else if (event.key.keysym.sym == SDLK_c)
-                    {
-                        contiPlaying = true;
-                        getStart = 1;
-                    }
                     else if (event.key.keysym.sym == SDLK_RETURN)
                     {
-                        contiPlaying = false;
                         getStart = 1;
                         tab = createTab(size);
                         backtab = createTab(size);
@@ -234,23 +227,23 @@ int main(int argc, char *argv[])
         // GAME WINDOW
         else if (getStart && !checkLose(tab, size) && !checkWin(tab, size))
         {
+            // if (contiPlaying)
+            // {
+            //     if (true)
+            //     {
+            //         SDL_FillRect(screen, NULL, lavender);
+            //         drawRectangle(screen, 20, 130, SCREEN_WIDTH - 40, 60, white, cornFlowerBlue);
+
+            //         sprintf(text, "Empty!");
+            //         drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 14, text, char_pic);
+            //     }
+            //     else
+            //         openPretabFile(tab, size);
+
+            //     contiPlaying = false;
+            // }
+
             //TIME COUNING
-            if (contiPlaying)
-            {
-                if (true)
-                {
-                    SDL_FillRect(screen, NULL, lavender);
-                    drawRectangle(screen, 20, 130, SCREEN_WIDTH - 40, 60, white, cornFlowerBlue);
-
-                    sprintf(text, "Empty!");
-                    drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 14, text, char_pic);
-                }
-                else
-                    openPretabFile(tab, size);
-
-                contiPlaying = false;
-            }
-
             t2 = SDL_GetTicks();
             delta = (t2 - t1) * 0.001;
             t1 = t2;
@@ -304,11 +297,10 @@ int main(int argc, char *argv[])
                 case SDL_KEYDOWN:
                     if (event.key.keysym.sym == SDLK_ESCAPE)
                     {
-                        save_pretab(tab, size);
+                        // save_pretab(tab, size);
+                        // preWorldTime = worldTime;
+                        // contiPlaying = false;
 
-                        preWorldTime = worldTime;
-
-                        contiPlaying = false;
                         getStart = 0;
                     }
                     else if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_DOWN ||
@@ -323,18 +315,18 @@ int main(int argc, char *argv[])
                         copyTab(tab, backtab, size);
                         score = backScore;
                     }
-                    //                    else if (event.key.keysym.sym == SDLK_m)
-                    //                    {
-                    //                        for (int i = 0; i < size; ++i)
-                    //                            delete[] tab[i];
-                    //                        delete[] tab;
-                    //
-                    //                        for (int i = 0; i < size; ++i)
-                    //                            delete[] backtab[i];
-                    //                        delete[] backtab;
-                    //
-                    //                        getStart = 0;
-                    //                    }
+                    // else if (event.key.keysym.sym == SDLK_m)
+                    // {
+                    //     for (int i = 0; i < size; ++i)
+                    //         delete[] tab[i];
+                    //     delete[] tab;
+
+                    //     for (int i = 0; i < size; ++i)
+                    //         delete[] backtab[i];
+                    //     delete[] backtab;
+
+                    //     getStart = 0;
+                    // }
                     else if (event.key.keysym.sym == SDLK_p)
                     {
                         bool pause_game = 0;
@@ -349,7 +341,7 @@ int main(int argc, char *argv[])
                             // info text
                             drawRectangle(screen, 20, 3, SCREEN_WIDTH - 40, 48, white, cornFlowerBlue);
 
-                            sprintf(text, "Time = %.1lf s  %.0lf frames/s", preWorldTime, preFps);
+                            sprintf(text, "Time: %.1lf s  %.0lf frames/s", preWorldTime, preFps);
                             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 14, text, char_pic);
 
                             sprintf(text, "esc - back to game, r - rankings");
@@ -364,10 +356,6 @@ int main(int argc, char *argv[])
                                         pause_game = 1;
                                     else if (event.key.keysym.sym == SDLK_r)
                                     {
-                                        // pause game;
-                                        preWorldTime = worldTime;
-                                        preFps = fps;
-
                                         // SHOW RANKING WINDOW
                                         bool show_ranking = 0;
                                         int amountBoard = 0;
@@ -587,7 +575,10 @@ int main(int argc, char *argv[])
                     {
                     case SDL_KEYDOWN:
                         if (event.key.keysym.sym == SDLK_ESCAPE)
+                        {
+                            loseWindow = 1;
                             quit = 1;
+                        }
                         else if (event.key.keysym.sym == SDLK_m)
                         {
                             for (int i = 0; i < size; ++i)
@@ -598,8 +589,8 @@ int main(int argc, char *argv[])
                                 delete[] backtab[i];
                             delete[] backtab;
 
-                            getStart = 0;
                             loseWindow = 1;
+                            getStart = 0;
                         }
                         break;
                     case SDL_QUIT:
@@ -624,7 +615,7 @@ int main(int argc, char *argv[])
                 SDL_FillRect(screen, NULL, lavender);
 
                 drawRectangle(screen, 100, 10, SCREEN_WIDTH - 200, 36, white, cornFlowerBlue);
-                sprintf(text, "YOU WIN!!! s - save time, esc - quit");
+                sprintf(text, "YOU WIN!!!  s - save time, esc - quit");
                 drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 26, text, char_pic);
 
                 drawRectangle(screen, SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 - 36, 400, 36, white, cornFlowerBlue);
@@ -637,19 +628,25 @@ int main(int argc, char *argv[])
                     {
                     case SDL_KEYDOWN:
                         if (event.key.keysym.sym == SDLK_ESCAPE)
+                        {
+                            winWindow = 1;
                             quit = 1;
+                        }
                         else if (event.key.keysym.sym == SDLK_s)
                         {
                             savePointToFile(score, endTime, size);
 
-                            while (!quit)
+                            bool saveWindow = 0;
+
+                            while (!saveWindow)
                             {
                                 SDL_FillRect(screen, NULL, lavender);
-                                drawRectangle(screen, 4, 4, SCREEN_WIDTH - 8, 36, white, cornFlowerBlue);
+
+                                drawRectangle(screen, 150, SCREEN_HEIGHT / 2 - 10, SCREEN_WIDTH - 300, 40, white, cornFlowerBlue);
                                 sprintf(text, "Score saved!");
-                                drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 10, text, char_pic);
+                                drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, SCREEN_HEIGHT / 2 - 1, text, char_pic);
                                 sprintf(text, "esc - close game");
-                                drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 26, text, char_pic);
+                                drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, SCREEN_HEIGHT / 2 + 14, text, char_pic);
 
                                 while (SDL_PollEvent(&event))
                                 {
@@ -657,9 +654,22 @@ int main(int argc, char *argv[])
                                     {
                                     case SDL_KEYDOWN:
                                         if (event.key.keysym.sym == SDLK_ESCAPE)
-                                            quit = 1;
+                                        {
+                                            for (int i = 0; i < size; ++i)
+                                                delete[] tab[i];
+                                            delete[] tab;
+
+                                            for (int i = 0; i < size; ++i)
+                                                delete[] backtab[i];
+                                            delete[] backtab;
+
+                                            saveWindow = 1;
+                                            winWindow = 1;
+                                            getStart = 0;
+                                        }
                                         break;
                                     case SDL_QUIT:
+                                        winWindow = 1;
                                         quit = 1;
                                         break;
                                     };
@@ -680,8 +690,8 @@ int main(int argc, char *argv[])
                                 delete[] backtab[i];
                             delete[] backtab;
 
-                            getStart = 0;
                             winWindow = 1;
+                            getStart = 0;
                         }
                         break;
                     case SDL_QUIT:
