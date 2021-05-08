@@ -25,12 +25,4 @@ Instruction:
 ----------------
 - Plugin: SDL2
 - Using arrows to move
-- Features: choose custom size, continue playing, undo one move, rankings 
-
-Functions:
-----------------
-- In 'move.cpp':
-  - rush... funcs to push all blocks to one direction
-  - move... funcs to plus similar blocks
-  - copyTab() for undo thing
-- The rest was commented in code
+- Features: choose custom size, continue playing, undo one move, rankings
