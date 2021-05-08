@@ -18,8 +18,8 @@ Some words:
 
 Download folder zip, then open with CodeBlocks:
 ----------------
-- open folder to choose '2048_demo.cbp'
-- build and run 'main.cpp' to play
+- Open folder to choose '2048_demo.cbp'
+- Build and run 'main.cpp' to play
 
 Instruction:
 ----------------
