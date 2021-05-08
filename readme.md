@@ -1,4 +1,4 @@
-# This is my 2048 game!
+# This is my 2048 game
 ## <i>A mini game for mid-term project in my VNU/UET/INT2215 class</i>
 
           /\            /\       /\     /\
