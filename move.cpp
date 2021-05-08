@@ -14,7 +14,8 @@
 #include <stdlib.h>
 #include <string>
 
-//move to any direction
+//rush... funcs to push all blocks to one direction
+//move... funcs to plus similar blocks
 void rushTop(int **&tab, int size)
 {
 	for (int i = 1; i < size; i++)
@@ -187,7 +188,7 @@ void moveLeft(int **&tab, int size, unsigned int &score)
 	rushLeft(tab, size);
 }
 
-//copy one array to another
+//copy one array to another, for undo thing
 void copyTab(int **&tab1, int **&tab2, int size)
 {
 	for (int i = 0; i < size; i++)
