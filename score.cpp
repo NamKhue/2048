@@ -170,7 +170,7 @@ void save_pretab(int **&tab, int size)
 	fclose(tabList);
 }
 
-int openPretabFile(int **&pTab, int size)
+void openPretabFile(int **&pTab, int size)
 {
     FILE *f;
 
@@ -181,7 +181,7 @@ int openPretabFile(int **&pTab, int size)
 
             if (f == NULL)
             {
-                return 0;
+                return;
             }
 
             fseek(f, 0, SEEK_SET);
@@ -199,7 +199,7 @@ int openPretabFile(int **&pTab, int size)
 
             if (f == NULL)
             {
-                return 0;
+                return;
             }
 
             fseek(f, 0, SEEK_SET);
@@ -217,7 +217,7 @@ int openPretabFile(int **&pTab, int size)
 
             if (f == NULL)
             {
-                return 0;
+                return;
             }
 
             fseek(f, 0, SEEK_SET);
@@ -235,7 +235,7 @@ int openPretabFile(int **&pTab, int size)
 
             if (f == NULL)
             {
-                return 0;
+                return;
             }
 
             fseek(f, 0, SEEK_SET);
@@ -253,7 +253,7 @@ int openPretabFile(int **&pTab, int size)
 
             if (f == NULL)
             {
-                return 0;
+                return;
             }
 
             fseek(f, 0, SEEK_SET);
@@ -271,7 +271,7 @@ int openPretabFile(int **&pTab, int size)
 
             if (f == NULL)
             {
-                return 0;
+                return;
             }
 
             fseek(f, 0, SEEK_SET);
@@ -289,7 +289,7 @@ int openPretabFile(int **&pTab, int size)
 
             if (f == NULL)
             {
-                return 0;
+                return;
             }
 
             fseek(f, 0, SEEK_SET);
@@ -307,7 +307,7 @@ int openPretabFile(int **&pTab, int size)
 
             if (f == NULL)
             {
-                return 0;
+                return;
             }
 
             fseek(f, 0, SEEK_SET);
