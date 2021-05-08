@@ -1,4 +1,3 @@
-//#include "name_user.h"
 #include "score.h"
 #include "draw.h"
 #include "win_lose.h"
@@ -25,21 +24,16 @@
 #define BOARD_X 50
 #define BOARD_Y 10
 
-//main
-//#ifdef __cplusplus
-//extern "C"
-//#endif
+SDL_Event event;
+SDL_Surface *screen, *char_pic;
+SDL_Texture *scrtex;
+SDL_Window *window;
+SDL_Renderer *renderer;
 
-int main(int argc, char *argv[])
+char text[128];
+
+bool init()
 {
-    srand(time(NULL));
-
-    SDL_Event event;
-    SDL_Surface *screen, *char_pic;
-    SDL_Texture *scrtex;
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
         printf("SDL_Init error: %s\n", SDL_GetError());
@@ -52,8 +46,13 @@ int main(int argc, char *argv[])
         SDL_Quit();
         printf("SDL_CreateWindowAndRenderer error: %s\n", SDL_GetError());
         return 1;
-    };
+    }
 
+    return 0;
+}
+
+void initBg()
+{
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -65,6 +64,12 @@ int main(int argc, char *argv[])
                                SDL_TEXTUREACCESS_STREAMING,
                                SCREEN_WIDTH, SCREEN_HEIGHT);
 
+    //disable cursor visibility
+    SDL_ShowCursor(SDL_DISABLE);
+}
+
+bool loadImg()
+{
     char_pic = SDL_LoadBMP("img//char_pic.bmp");
     if (char_pic == NULL)
     {
@@ -76,11 +81,21 @@ int main(int argc, char *argv[])
         SDL_Quit();
         return 1;
     };
+
+    return 0;
+}
+
+int main(int argc, char *argv[])
+{
+    srand(time(NULL));
+
+    init();
+    initBg();
+    loadImg();
+
     SDL_SetColorKey(char_pic, true, 0x000000);
 
-    //disable cursor visibility
-    SDL_ShowCursor(SDL_DISABLE);
-
+    //declare
     int size = 4;
     bool getStart = 0, contiPlaying;
 
@@ -93,8 +108,6 @@ int main(int argc, char *argv[])
     int t1, t2, quit, frames;
     double delta, worldTime, preWorldTime, fpsTimer, fps, preFps;
 
-    char text[128];
-
     int white = SDL_MapRGB(screen->format, 255, 255, 255);
     int lavender = SDL_MapRGB(screen->format, 230, 230, 250);
     int cornFlowerBlue = SDL_MapRGB(screen->format, 100, 149, 237);
@@ -103,6 +116,7 @@ int main(int argc, char *argv[])
     int orange = SDL_MapRGB(screen->format, 247, 164, 64);
     int red = SDL_MapRGB(screen->format, 240, 89, 69);
 
+    //assign variables with value
     tab = createTab(size);
     backtab = createTab(size);
     copyTab(tab, backtab, size);
@@ -129,7 +143,7 @@ int main(int argc, char *argv[])
             drawRectangle(screen, 2, 18, 165, 236, white, orange);
             drawRectangle(screen, 166, 18, 162, 236, white, pink);
             drawRectangle(screen, 327, 18, 153, 236, white, green);
-            drawRectangle(screen, 479, 18, 157, 236, white, red);
+            drawRectangle(screen, 479, 18, 159, 236, white, red);
 
             sprintf(text, "   2222222222222          000000000             444444444        888888888     ");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 20, text, char_pic);
@@ -154,7 +168,7 @@ int main(int argc, char *argv[])
             sprintf(text, "2     2              0     0     0     0           4    4   8     8     8     8");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 170, text, char_pic);
             sprintf(text, "2     2              0      0   0      0           4    4   8     8     8     8");
-            drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 185, text, char_pic);
+            drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 /  2, 185, text, char_pic);
             sprintf(text, "2     2       222222 0       000       0           4    4   8       888       8");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 200, text, char_pic);
             sprintf(text, "2     222222222    2  00             00          44      44  88             88 ");
@@ -479,7 +493,7 @@ int main(int argc, char *argv[])
                             sprintf(text, "esc - back to game, t - sort by time, p - sort by points");
                             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 30, text, char_pic);
 
-                            //set start of ranking
+                            // set start of ranking
                             if (startShow <= 0)
                                 startShow = 0;
                             if (startShow >= amountBoard - 10)
@@ -490,7 +504,7 @@ int main(int argc, char *argv[])
                                 limit = amountBoard;
                             }
 
-                            //check there is winner list
+                            // check there is winner list
                             if (fileSize == 0 || limit == 0)
                             {
                                 drawRectangle(screen, 140, SCREEN_HEIGHT / 2, SCREEN_WIDTH - 280, 40, white, cornFlowerBlue);
