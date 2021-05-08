@@ -31,7 +31,7 @@ void sortByScore(PLAYERSCORE *&tab, int size);
 void sortByTime(PLAYERSCORE *&tab, int size);
 PLAYERSCORE *createRanking(PLAYERSCORE *tab, int amount, int size, int fileSize);
 void save_pretab(int **&tab, int size);
-int openPretabFile(int **&pTab, int size);
+void openPretabFile(int **&pTab, int size);
 void savePointToFile(int score, double time, int size);
 PLAYERSCORE *openPointFile(int &lines);
 
