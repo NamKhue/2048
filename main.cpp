@@ -41,7 +41,7 @@ bool init()
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
         printf("SDL_Init error: %s\n", SDL_GetError());
-        return 1;
+        return 0;
     }
 
     int rc = SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, 0, &window, &renderer);
@@ -49,17 +49,17 @@ bool init()
     {
         SDL_Quit();
         printf("SDL_CreateWindowAndRenderer error: %s\n", SDL_GetError());
-        return 1;
+        return 0;
     }
 
     //Initialize SDL_mixer
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
     {
         printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-        return 1;
+        return 0;
     }
 
-    return 0;
+    return 1;
 }
 
 void initBg()
@@ -84,16 +84,15 @@ bool loadImg()
     char_pic = SDL_LoadBMP("img//char_pic.bmp");
     if (char_pic == NULL)
     {
-        printf("Can't load image: %s\n", SDL_GetError());
         SDL_FreeSurface(screen);
         SDL_DestroyTexture(scrtex);
         SDL_DestroyWindow(window);
         SDL_DestroyRenderer(renderer);
         SDL_Quit();
-        return 1;
+        return 0;
     };
 
-    return 0;
+    return 1;
 }
 
 bool loadMedia()
@@ -102,7 +101,6 @@ bool loadMedia()
     gMusic = Mix_LoadMUS("musicBg.wav");
     if (gMusic == NULL)
     {
-        printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
         return 0;
     }
 
@@ -113,10 +111,23 @@ int main(int argc, char *argv[])
 {
     srand(time(NULL));
 
-    init();
+    if (!init())
+    {
+        printf("Can't initialize! %s\n", SDL_GetError());
+    }
+
     initBg();
-    loadImg();
-    loadMedia();
+
+    if (!loadImg())
+    {
+        printf("Can't load image: %s\n", SDL_GetError());
+    }
+
+    if (!loadMedia())
+    {
+        printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+    }
+
     SDL_SetColorKey(char_pic, true, 0x000000);
 
     //declare
