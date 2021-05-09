@@ -15,6 +15,7 @@
 
 #include <SDL.h>
 #include <SDL_main.h>
+#include <SDL_mixer.h>
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -29,6 +30,9 @@ SDL_Surface *screen, *char_pic;
 SDL_Texture *scrtex;
 SDL_Window *window;
 SDL_Renderer *renderer;
+
+//The music that will be played
+Mix_Music *gMusic = Mix_LoadMUS("musicBg.wav");
 
 char text[128];
 
@@ -45,6 +49,13 @@ bool init()
     {
         SDL_Quit();
         printf("SDL_CreateWindowAndRenderer error: %s\n", SDL_GetError());
+        return 1;
+    }
+
+    //Initialize SDL_mixer
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+    {
+        printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
         return 1;
     }
 
@@ -85,6 +96,19 @@ bool loadImg()
     return 0;
 }
 
+bool loadMedia()
+{
+    //Load music
+    gMusic = Mix_LoadMUS("musicBg.wav");
+    if (gMusic == NULL)
+    {
+        printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+        return 0;
+    }
+
+    return 1;
+}
+
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
@@ -92,6 +116,7 @@ int main(int argc, char *argv[])
     init();
     initBg();
     loadImg();
+    loadMedia();
     SDL_SetColorKey(char_pic, true, 0x000000);
 
     //declare
@@ -132,6 +157,9 @@ int main(int argc, char *argv[])
         // START WINDOW
         if (!getStart)
         {
+            // play music
+            Mix_PlayMusic(gMusic, -1);
+
             if (size >= 10)
                 size = 10;
             if (size <= 3)
@@ -280,7 +308,7 @@ int main(int argc, char *argv[])
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 14, text, char_pic);
             sprintf(text, "arrows (a,w,s,d) - move, u - undo");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 30, text, char_pic);
-            sprintf(text, "esc - menu, r - rankings, p - pause");
+            sprintf(text, "esc - menu, r - rankings, o - pause music, p - pause");
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 46, text, char_pic);
 
             SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
@@ -312,18 +340,6 @@ int main(int argc, char *argv[])
                         copyTab(tab, backtab, size);
                         score = backScore;
                     }
-                    // else if (event.key.keysym.sym == SDLK_m)
-                    // {
-                    //     for (int i = 0; i < size; ++i)
-                    //         delete[] tab[i];
-                    //     delete[] tab;
-
-                    //     for (int i = 0; i < size; ++i)
-                    //         delete[] backtab[i];
-                    //     delete[] backtab;
-
-                    //     getStart = 0;
-                    // }
                     else if (event.key.keysym.sym == SDLK_p)
                     {
                         bool pause_game = 0;
@@ -536,6 +552,21 @@ int main(int argc, char *argv[])
                         }
                         delete[] sizeRanking;
                     }
+                    else if (event.key.keysym.sym == SDLK_o)
+                    {
+                        //If the music is paused
+                        if (Mix_PausedMusic() == 1)
+                        {
+                            //Resume the music
+                            Mix_ResumeMusic();
+                        }
+                        //If the music is playing
+                        else
+                        {
+                            //Pause the music
+                            Mix_PauseMusic();
+                        }
+                    }
                     break;
                 case SDL_KEYUP:
 
@@ -720,6 +751,12 @@ int main(int argc, char *argv[])
     SDL_DestroyTexture(scrtex);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+
+    // free music
+    Mix_FreeMusic(gMusic);
+    gMusic = NULL;
+    Mix_Quit();
+
     SDL_Quit();
 
     return 0;
