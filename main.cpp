@@ -297,7 +297,6 @@ int main(int argc, char *argv[])
                     {
                         save_pretab(tab, size);
                         preWorldTime = worldTime;
-                        contiPlaying = 0;
 
                         getStart = 0;
                     }
