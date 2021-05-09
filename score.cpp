@@ -154,7 +154,7 @@ void save_pretab(int **&tab, int size)
             fprintf(tabList, "\n");
         }
         break;
-    default:
+    case 10:
         tabList = fopen("text//size 10.txt", "w");
         for (int i = 0; i < 10; i++)
         {
@@ -302,7 +302,7 @@ void openPretabFile(int **&pTab, int size)
             fscanf(f, "\n");
         }
         break;
-    default:
+    case 10:
         f = fopen("text//size 10.txt", "r");
 
         if (f == NULL)
