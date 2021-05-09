@@ -144,7 +144,6 @@ int main(int argc, char *argv[])
     tab = createTab(size);
     backtab = createTab(size);
     copyTab(tab, backtab, size);
-    winnerList = openPointFile(fileSize);
 
     frames = 0;
     fpsTimer = 0;
@@ -469,6 +468,9 @@ int main(int argc, char *argv[])
                         // pause game;
                         preWorldTime = worldTime;
                         preFps = fps;
+
+                        fileSize = 0;
+                        winnerList = openPointFile(fileSize);
 
                         // SHOW RANKING WINDOW
                         bool show_ranking = 0;
