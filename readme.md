@@ -16,13 +16,19 @@ Some words:
 - All draw functions involving SDL from internet
 - This is developed game version
 
-Download folder zip, then open with CodeBlocks:
-----------------
-- Open folder to choose '2048_demo.cbp'
-- Build and run 'main.cpp' to play
-
 Instruction:
 ----------------
 - Plugin: SDL2
 - Using arrows to move
 - Features: choose custom size, continue playing (developing period), undo one move, rankings
+
+To play, first download folder zip:
+----------------
+- Open 'Release' and run '2048_demo.exe'
+
+Or open with CodeBlocks:
+----------------
+- Open folder to choose '2048_demo.cbp'
+- Build and run 'main.cpp'
+
+#### Have fun!
