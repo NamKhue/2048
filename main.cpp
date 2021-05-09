@@ -187,9 +187,9 @@ int main(int argc, char *argv[])
             sprintf(text, "Size: %d", size);
             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 4, SCREEN_HEIGHT / 2 + 100, text, char_pic);
 
-            // drawRectangle(screen, 270, SCREEN_HEIGHT / 2 + 125, 100, 36, white, cornFlowerBlue);
-            // sprintf(text, "Continue");
-            // drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 4, SCREEN_HEIGHT / 2 + 140, text, char_pic);
+            drawRectangle(screen, 270, SCREEN_HEIGHT / 2 + 125, 100, 36, white, cornFlowerBlue);
+            sprintf(text, "Continue");
+            drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 4, SCREEN_HEIGHT / 2 + 140, text, char_pic);
 
             while (SDL_PollEvent(&event))
             {
@@ -202,8 +202,17 @@ int main(int argc, char *argv[])
                         size++;
                     else if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s)
                         size--;
+                    else if (event.key.keysym.sym == SDLK_c)
+                    {
+                        contiPlaying = 1;
+                        getStart = 1;
+                        tab = createTab(size);
+                        backtab = createTab(size);
+                        openPretabFile(tab, size);
+                    }
                     else if (event.key.keysym.sym == SDLK_RETURN)
                     {
+                        contiPlaying = 0;
                         getStart = 1;
                         tab = createTab(size);
                         backtab = createTab(size);
@@ -227,21 +236,10 @@ int main(int argc, char *argv[])
         // GAME WINDOW
         else if (getStart && !checkLose(tab, size) && !checkWin(tab, size))
         {
-            // if (contiPlaying)
-            // {
-            //     if (true)
-            //     {
-            //         SDL_FillRect(screen, NULL, lavender);
-            //         drawRectangle(screen, 20, 130, SCREEN_WIDTH - 40, 60, white, cornFlowerBlue);
-
-            //         sprintf(text, "Empty!");
-            //         drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 14, text, char_pic);
-            //     }
-            //     else
-            //         openPretabFile(tab, size);
-
-            //     contiPlaying = false;
-            // }
+            if (contiPlaying)
+            {
+                contiPlaying = 0;
+            }
 
             //TIME COUNING
             t2 = SDL_GetTicks();
@@ -297,9 +295,9 @@ int main(int argc, char *argv[])
                 case SDL_KEYDOWN:
                     if (event.key.keysym.sym == SDLK_ESCAPE)
                     {
-                        // save_pretab(tab, size);
-                        // preWorldTime = worldTime;
-                        // contiPlaying = false;
+                        save_pretab(tab, size);
+                        preWorldTime = worldTime;
+                        contiPlaying = 0;
 
                         getStart = 0;
                     }
