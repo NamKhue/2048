@@ -12,10 +12,12 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string>
+#include <sstream>
 
 #include <SDL.h>
 #include <SDL_main.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -34,7 +36,163 @@ SDL_Renderer *renderer;
 //The music that will be played
 Mix_Music *gMusic = Mix_LoadMUS("musicBg.wav");
 
+//Globally used font
+TTF_Font *gFont = NULL;
+
 char text[128];
+
+// changes
+
+//Texture wrapper class
+class LTexture
+{
+public:
+    //Initializes variables
+    LTexture();
+
+    //Deallocates memory
+    ~LTexture();
+
+    //Creates image from font string
+    bool loadFromRenderedText(std::string textureText, SDL_Color textColor);
+
+    //Deallocates texture
+    void free();
+
+    //Set color modulation
+    void setColor(Uint8 red, Uint8 green, Uint8 blue);
+
+    //Set blending
+    void setBlendMode(SDL_BlendMode blending);
+
+    //Set alpha modulation
+    void setAlpha(Uint8 alpha);
+
+    //Renders texture at given point
+    void render(int x, int y, SDL_Rect *clip = NULL, double angle = 0.0, SDL_Point *center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
+
+    //Gets image dimensions
+    int getWidth();
+    int getHeight();
+
+private:
+    //The actual hardware texture
+    SDL_Texture *mTexture;
+
+    //Image dimensions
+    int mWidth;
+    int mHeight;
+};
+
+//Scene textures
+LTexture gPromptTextTexture;
+LTexture gInputTextTexture;
+
+LTexture::LTexture()
+{
+    //Initialize
+    mTexture = NULL;
+    mWidth = 0;
+    mHeight = 0;
+}
+
+LTexture::~LTexture()
+{
+    //Deallocate
+    free();
+}
+
+bool LTexture::loadFromRenderedText(std::string textureText, SDL_Color textColor)
+{
+    //Get rid of preexisting texture
+    free();
+
+    //Render text surface
+    SDL_Surface *textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
+    if (textSurface != NULL)
+    {
+        //Create texture from surface pixels
+        mTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+        if (mTexture == NULL)
+        {
+            printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+        }
+        else
+        {
+            //Get image dimensions
+            mWidth = textSurface->w;
+            mHeight = textSurface->h;
+        }
+
+        //Get rid of old surface
+        SDL_FreeSurface(textSurface);
+    }
+    else
+    {
+        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+    }
+
+    //Return success
+    return mTexture != NULL;
+}
+
+void LTexture::free()
+{
+    //Free texture if it exists
+    if (mTexture != NULL)
+    {
+        SDL_DestroyTexture(mTexture);
+        mTexture = NULL;
+        mWidth = 0;
+        mHeight = 0;
+    }
+}
+
+void LTexture::setColor(Uint8 red, Uint8 green, Uint8 blue)
+{
+    //Modulate texture rgb
+    SDL_SetTextureColorMod(mTexture, red, green, blue);
+}
+
+void LTexture::setBlendMode(SDL_BlendMode blending)
+{
+    //Set blending function
+    SDL_SetTextureBlendMode(mTexture, blending);
+}
+
+void LTexture::setAlpha(Uint8 alpha)
+{
+    //Modulate texture alpha
+    SDL_SetTextureAlphaMod(mTexture, alpha);
+}
+
+void LTexture::render(int x, int y, SDL_Rect *clip, double angle, SDL_Point *center, SDL_RendererFlip flip)
+{
+    //Set rendering space and render to screen
+    SDL_Rect renderQuad = {x, y, mWidth, mHeight};
+
+    //Set clip rendering dimensions
+    if (clip != NULL)
+    {
+        renderQuad.w = clip->w;
+        renderQuad.h = clip->h;
+    }
+
+    //Render to screen
+    SDL_RenderCopyEx(renderer, mTexture, clip, &renderQuad, angle, center, flip);
+}
+
+int LTexture::getWidth()
+{
+    return mWidth;
+}
+
+int LTexture::getHeight()
+{
+    return mHeight;
+}
+
+// over of changes
 
 bool init()
 {
@@ -56,6 +214,13 @@ bool init()
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
     {
         printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+        return 0;
+    }
+
+    //Initialize SDL_ttf
+    if (TTF_Init() == -1)
+    {
+        printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
         return 0;
     }
 
@@ -104,6 +269,24 @@ bool loadMedia()
         return 0;
     }
 
+    //Open the font
+    gFont = TTF_OpenFont("font//bahnschrift.ttf", 15);
+    if (gFont == NULL)
+    {
+        printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
+        return 0;
+    }
+    else
+    {
+        //Render the prompt
+        SDL_Color textColor = {0, 0, 0, 0xFF};
+        if (!gPromptTextTexture.loadFromRenderedText("Your name:", textColor))
+        {
+            printf("Failed to render prompt text!\n");
+            return 0;
+        }
+    }
+
     return 1;
 }
 
@@ -114,6 +297,7 @@ int main(int argc, char *argv[])
     if (!init())
     {
         printf("Can't initialize! %s\n", SDL_GetError());
+        return 0;
     }
 
     initBg();
@@ -121,11 +305,13 @@ int main(int argc, char *argv[])
     if (!loadImg())
     {
         printf("Can't load image: %s\n", SDL_GetError());
+        return 0;
     }
 
     if (!loadMedia())
     {
-        printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+        printf("Failed to load! %s\n", SDL_GetError());
+        return 0;
     }
 
     SDL_SetColorKey(char_pic, true, 0x000000);
@@ -142,6 +328,8 @@ int main(int argc, char *argv[])
 
     int t1, t2, quit, frames;
     double delta, worldTime, preWorldTime, fpsTimer, fps, preFps;
+
+    std::string username;
 
     int white = SDL_MapRGB(screen->format, 255, 255, 255);
     int lavender = SDL_MapRGB(screen->format, 230, 230, 250);
@@ -660,12 +848,19 @@ int main(int argc, char *argv[])
                 SDL_FillRect(screen, NULL, lavender);
 
                 drawRectangle(screen, 100, 10, SCREEN_WIDTH - 200, 36, white, cornFlowerBlue);
-                sprintf(text, "YOU WIN!!!  s - save time, esc - quit");
+                sprintf(text, "YOU WIN!!!   s - save time, m - menu, esc - quit");
                 drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 26, text, char_pic);
 
                 drawRectangle(screen, SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 - 36, 400, 36, white, cornFlowerBlue);
                 sprintf(text, "Time: %.1lfs  Score: %u", endTime, score);
                 drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 4, SCREEN_HEIGHT / 2 - 20, text, char_pic);
+
+                //Set text color as black
+                SDL_Color textColor = {0, 0, 0, 0xFF};
+
+                //The current input text.
+                std::string inputText = "name";
+                gInputTextTexture.loadFromRenderedText(inputText.c_str(), textColor);
 
                 while (SDL_PollEvent(&event))
                 {
@@ -679,6 +874,9 @@ int main(int argc, char *argv[])
                         }
                         else if (event.key.keysym.sym == SDLK_s)
                         {
+                            //Enable text input
+                            SDL_StartTextInput();
+
                             savePointToFile(score, endTime, size);
 
                             bool saveWindow = 0;
@@ -693,13 +891,36 @@ int main(int argc, char *argv[])
                                 sprintf(text, "esc - close game");
                                 drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, SCREEN_HEIGHT / 2 + 14, text, char_pic);
 
+                                //The rerender text flag
+                                bool renderText = false;
+
                                 while (SDL_PollEvent(&event))
                                 {
                                     switch (event.type)
                                     {
                                     case SDL_KEYDOWN:
-                                        if (event.key.keysym.sym == SDLK_ESCAPE)
+                                        //Handle backspace
+                                        if (event.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0)
                                         {
+                                            //lop off character
+                                            inputText.pop_back();
+                                            renderText = true;
+                                        }
+                                        //Handle copy
+                                        else if (event.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL)
+                                        {
+                                            SDL_SetClipboardText(inputText.c_str());
+                                        }
+                                        //Handle paste
+                                        else if (event.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
+                                        {
+                                            inputText = SDL_GetClipboardText();
+                                            renderText = true;
+                                        }
+                                        else if (event.key.keysym.sym == SDLK_RETURN)
+                                        {
+                                            username = inputText;
+
                                             for (int i = 0; i < size; ++i)
                                                 delete[] tab[i];
                                             delete[] tab;
@@ -712,6 +933,20 @@ int main(int argc, char *argv[])
                                             winWindow = 1;
                                             getStart = 0;
                                         }
+
+                                        break;
+                                    case SDL_TEXTINPUT:
+                                        //Not copy or pasting
+                                        if (!(SDL_GetModState() & KMOD_CTRL &&
+                                              (event.text.text[0] == 'c' ||
+                                               event.text.text[0] == 'C' ||
+                                               event.text.text[0] == 'v' ||
+                                               event.text.text[0] == 'V')))
+                                        {
+                                            //Append character
+                                            inputText += event.text.text;
+                                            renderText = true;
+                                        }
                                         break;
                                     case SDL_QUIT:
                                         winWindow = 1;
@@ -720,10 +955,35 @@ int main(int argc, char *argv[])
                                     };
                                 };
 
+                                //Rerender text if needed
+                                if (renderText)
+                                {
+                                    //Text is not empty
+                                    if (inputText != "")
+                                    {
+                                        //Render new text
+                                        gInputTextTexture.loadFromRenderedText(inputText.c_str(), textColor);
+                                    }
+                                    //Text is empty
+                                    else
+                                    {
+                                        //Render space texture
+                                        gInputTextTexture.loadFromRenderedText(" ", textColor);
+                                    }
+                                }
+
                                 SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
                                 SDL_RenderCopy(renderer, scrtex, NULL, NULL);
+
+                                //Render text textures
+                                gPromptTextTexture.render((SCREEN_WIDTH - gPromptTextTexture.getWidth()) / 2, 0);
+                                gInputTextTexture.render((SCREEN_WIDTH - gInputTextTexture.getWidth()) / 2, gPromptTextTexture.getHeight());
+
                                 SDL_RenderPresent(renderer);
                             }
+
+                            //Disable text input
+                            SDL_StopTextInput();
                         }
                         else if (event.key.keysym.sym == SDLK_m)
                         {
@@ -763,6 +1023,14 @@ int main(int argc, char *argv[])
 
     delete[] winnerList;
 
+    //    //Free loaded images
+    //    gPromptTextTexture.free();
+    //    gInputTextTexture.free();
+
+    //Free global font
+    TTF_CloseFont(gFont);
+    gFont = NULL;
+
     SDL_FreeSurface(char_pic);
     SDL_FreeSurface(screen);
     SDL_DestroyTexture(scrtex);
@@ -774,6 +1042,7 @@ int main(int argc, char *argv[])
     gMusic = NULL;
     Mix_Quit();
 
+    TTF_Quit();
     SDL_Quit();
 
     return 0;
