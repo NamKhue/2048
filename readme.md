@@ -1,5 +1,9 @@
 # This is my 2048 game
 
+Sinh viên: Đinh Nam Khuê
+MSSV: 20020110
+Lớp: QH-2020-I/CQ-I-C-D
+
 ## <i>A mini game for mid-term project in my VNU/UET/INT2215 class</i>
 
           /\            /\       /\     /\
