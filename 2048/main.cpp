@@ -329,7 +329,7 @@ int main(int argc, char *argv[])
     int t1, t2, quit, frames;
     double delta, worldTime, preWorldTime, fpsTimer, fps, preFps;
 
-    std::string username;
+    char username[200];
 
     int white = SDL_MapRGB(screen->format, 255, 255, 255);
     int lavender = SDL_MapRGB(screen->format, 230, 230, 250);
@@ -877,7 +877,7 @@ int main(int argc, char *argv[])
                             //Enable text input
                             SDL_StartTextInput();
 
-                            savePointToFile(score, endTime, size);
+//                            savePointToFile(score, endTime, size);
 
                             bool saveWindow = 0;
 
@@ -919,7 +919,11 @@ int main(int argc, char *argv[])
                                         }
                                         else if (event.key.keysym.sym == SDLK_RETURN)
                                         {
-                                            username = inputText;
+                                            sprintf(username, "%s", inputText.c_str());
+
+                                            FILE *fileList = fopen("text//winner list.txt", "a");
+                                            fprintf(fileList, "%u %.1lf %d %s\n", score, endTime, size, username);
+                                            fclose(fileList);
 
                                             for (int i = 0; i < size; ++i)
                                                 delete[] tab[i];
