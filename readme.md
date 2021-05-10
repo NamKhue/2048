@@ -21,7 +21,7 @@
 
 - Plugin: SDL2
 - Using arrows to move
-- Features: choose custom size, continue playing (developing period), undo one move, rankings
+- Features: choose custom size, continue playing, undo one move, rankings, players' name (developing period)
 
 ## To play, first download folder zip:
 
