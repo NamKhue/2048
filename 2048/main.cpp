@@ -167,8 +167,12 @@ int main(int argc, char *argv[])
         // START WINDOW
         if (!getStart)
         {
-            // play music
-            Mix_PlayMusic(gMusic, -1);
+            // If there is no music playing
+            if (Mix_PlayingMusic() == 0)
+            {
+                //Play the music
+                Mix_PlayMusic(gMusic, -1);
+            }
 
             if (size >= 10)
                 size = 10;
