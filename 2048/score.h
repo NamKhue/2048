@@ -25,6 +25,7 @@ struct PLAYERSCORE
     int endScore;
     double endTime;
     int endSize;
+    std::string username;
 };
 
 void sortByScore(PLAYERSCORE *&tab, int size);

@@ -618,7 +618,12 @@ int main(int argc, char *argv[])
                                             for (int i = startShow; placeShow < limit; i++)
                                             {
                                                 drawRectangle(screen, SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 - 190 + placeShow * 40, 400, 40, white, cornFlowerBlue);
-                                                sprintf(text, "%d. Time: %.1lfs Score: %d", startShow + placeShow + 1, sizeRanking[i].endTime, sizeRanking[i].endScore);
+
+                                                std::string str = sizeRanking[i].username;
+                                                char name[str.length() + 1];
+                                                sprintf(name, "%s", str.c_str());
+                                                sprintf(text, "%d. Player: %s - time: %.1lfs - score: %d", startShow + placeShow + 1, name, sizeRanking[i].endTime, sizeRanking[i].endScore);
+
                                                 drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 4, SCREEN_HEIGHT / 2 - 200 + 26 + placeShow * 40, text, char_pic);
 
                                                 placeShow++;
@@ -722,7 +727,12 @@ int main(int argc, char *argv[])
                             for (int i = startShow; placeShow < limit; i++)
                             {
                                 drawRectangle(screen, SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 - 190 + placeShow * 40, 400, 40, white, cornFlowerBlue);
-                                sprintf(text, "%d. Time: %.1lfs Score: %d", startShow + placeShow + 1, sizeRanking[i].endTime, sizeRanking[i].endScore);
+
+                                std::string str = sizeRanking[i].username;
+                                char name[str.length() + 1];
+                                sprintf(name, "%s", str.c_str());
+                                sprintf(text, "%d. Player: %s - time: %.1lfs - score: %d", startShow + placeShow + 1, name, sizeRanking[i].endTime, sizeRanking[i].endScore);
+
                                 drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 4, SCREEN_HEIGHT / 2 - 200 + 26 + placeShow * 40, text, char_pic);
 
                                 placeShow++;
