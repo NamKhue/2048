@@ -1,0 +1,155 @@
+# depslib dependency file v1.0
+1620570070 source:d:\learning\vs code\2048\2048\add_block.cpp
+	"add_block.h"
+	"check_put.h"
+	<SDL.h>
+	<SDL_main.h>
+	<math.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<string>
+
+1620570070 d:\learning\vs code\2048\2048\add_block.h
+	<math.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<string>
+	<SDL.h>
+	<SDL_main.h>
+
+1620570070 d:\learning\vs code\2048\2048\check_put.h
+
+1620570070 source:d:\learning\vs code\2048\2048\check_put.cpp
+
+1620570070 source:d:\learning\vs code\2048\2048\create_block.cpp
+	"create_block.h"
+	<SDL.h>
+	<SDL_main.h>
+	<math.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<string>
+
+1620570070 d:\learning\vs code\2048\2048\create_block.h
+	<math.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<string>
+	<SDL.h>
+	<SDL_main.h>
+
+1620570070 source:d:\learning\vs code\2048\2048\draw.cpp
+	"draw.h"
+	<SDL.h>
+	<SDL_main.h>
+	<math.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<string>
+
+1620570070 d:\learning\vs code\2048\2048\draw.h
+	<math.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<string>
+	<SDL.h>
+	<SDL_main.h>
+
+1620633201 source:d:\learning\vs code\2048\2048\main.cpp
+	"score.h"
+	"draw.h"
+	"win_lose.h"
+	"create_block.h"
+	"add_block.h"
+	"move.h"
+	<math.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<string>
+	<sstream>
+	<SDL.h>
+	<SDL_main.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+
+1620632775 d:\learning\vs code\2048\2048\score.h
+	<math.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<string>
+	<SDL.h>
+	<SDL_main.h>
+
+1620570070 d:\learning\vs code\2048\2048\win_lose.h
+	<math.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<string>
+	<SDL.h>
+	<SDL_main.h>
+
+1620570070 d:\learning\vs code\2048\2048\move.h
+	<math.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<string>
+	<SDL.h>
+	<SDL_main.h>
+
+1620606400 source:d:\learning\vs code\2048\2048\move.cpp
+	"move.h"
+	"check_put.h"
+	"add_block.h"
+	"create_block.h"
+	<SDL.h>
+	<SDL_main.h>
+	<math.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<string>
+
+1620632804 source:d:\learning\vs code\2048\2048\score.cpp
+	"score.h"
+	<SDL.h>
+	<SDL_main.h>
+	<math.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<string>
+
+1620633210 source:d:\learning\vs code\2048\2048\win_lose.cpp
+	"win_lose.h"
+	"check_put.h"
+	<SDL.h>
+	<SDL_main.h>
+	<math.h>
+	<stdio.h>
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<string>
+
