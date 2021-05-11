@@ -436,8 +436,11 @@ int main(int argc, char *argv[])
                     {
                         contiPlaying = 1;
                         getStart = 1;
+
                         tab = createTab(size);
                         backtab = createTab(size);
+                        copyTab(tab, backtab, size);
+
                         openPretabFile(tab, size);
                     }
                     else if (event.key.keysym.sym == SDLK_RETURN)
@@ -824,13 +827,17 @@ int main(int argc, char *argv[])
                         }
                         else if (event.key.keysym.sym == SDLK_m)
                         {
-                            for (int i = 0; i < size; ++i)
-                                delete[] tab[i];
-                            delete[] tab;
+                            tab = createTab(size);
+                            backtab = createTab(size);
+                            copyTab(tab, backtab, size);
+                            save_pretab(tab, size);
 
-                            for (int i = 0; i < size; ++i)
-                                delete[] backtab[i];
-                            delete[] backtab;
+                            score = 0;
+                            backScore = 0;
+                            frames = 0;
+                            fpsTimer = 0;
+                            fps = 0;
+                            worldTime = 0;
 
                             loseWindow = 1;
                             getStart = 0;
@@ -887,8 +894,6 @@ int main(int argc, char *argv[])
                             //Enable text input
                             SDL_StartTextInput();
 
-//                            savePointToFile(score, endTime, size);
-
                             bool saveWindow = 0;
 
                             while (!saveWindow)
@@ -935,13 +940,17 @@ int main(int argc, char *argv[])
                                             fprintf(fileList, "%u %.1lf %d %s\n", score, endTime, size, username);
                                             fclose(fileList);
 
-                                            for (int i = 0; i < size; ++i)
-                                                delete[] tab[i];
-                                            delete[] tab;
+                                            tab = createTab(size);
+                                            backtab = createTab(size);
+                                            copyTab(tab, backtab, size);
+                                            save_pretab(tab, size);
 
-                                            for (int i = 0; i < size; ++i)
-                                                delete[] backtab[i];
-                                            delete[] backtab;
+                                            score = 0;
+                                            backScore = 0;
+                                            frames = 0;
+                                            fpsTimer = 0;
+                                            fps = 0;
+                                            worldTime = 0;
 
                                             saveWindow = 1;
                                             winWindow = 1;
@@ -1001,13 +1010,17 @@ int main(int argc, char *argv[])
                         }
                         else if (event.key.keysym.sym == SDLK_m)
                         {
-                            for (int i = 0; i < size; ++i)
-                                delete[] tab[i];
-                            delete[] tab;
+                            tab = createTab(size);
+                            backtab = createTab(size);
+                            copyTab(tab, backtab, size);
+                            save_pretab(tab, size);
 
-                            for (int i = 0; i < size; ++i)
-                                delete[] backtab[i];
-                            delete[] backtab;
+                            score = 0;
+                            backScore = 0;
+                            frames = 0;
+                            fpsTimer = 0;
+                            fps = 0;
+                            worldTime = 0;
 
                             winWindow = 1;
                             getStart = 0;
