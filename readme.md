@@ -29,8 +29,7 @@
 
 ## To play, first download folder zip:
 
-- Open 'Release' and run '2048_demo.exe'
-- Or open with CodeBlocks:
+- Open with CodeBlocks, then:
   - Open folder to choose '2048_demo.cbp'
   - Build and run 'main.cpp'
 
