@@ -83,17 +83,17 @@ void moveBot(int **&tab, int size, unsigned int &score)
 {
 	rushBot(tab, size);
 
-	for (int i = 0; i < size; i++)
+	for (int i = 1; i < size; i++)
 	{
-		for (int j = size - 2; j >= 0; j--)
+		for (int j = 0; j < size; j++)
 		{
-			if (tab[j][i] != 0)
+			if (tab[i][j] != 0)
 			{
-				if (tab[j][i] == tab[j + 1][i])
+				if (tab[i - 1][j] == tab[i][j])
 				{
-					tab[j + 1][i] += tab[j][i];
-					score += tab[j + 1][i];
-					tab[j][i] = 0;
+					tab[i - 1][j] += tab[i][j];
+					score += tab[i - 1][j];
+					tab[i][j] = 0;
 				}
 			}
 		}
@@ -128,14 +128,14 @@ void moveRight(int **&tab, int size, unsigned int &score)
 
 	for (int i = 0; i < size; i++)
 	{
-		for (int j = size - 2; j >= 0; j--)
+		for (int j = 1; j < size; j++)
 		{
 			if (tab[i][j] != 0)
 			{
-				if (tab[i][j] == tab[i][j + 1])
+				if (tab[i][j] == tab[i][j - 1])
 				{
-					tab[i][j + 1] += tab[i][j];
-					score += tab[i][j + 1];
+					tab[i][j - 1] += tab[i][j];
+					score += tab[i][j - 1];
 					tab[i][j] = 0;
 				}
 			}
