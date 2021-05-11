@@ -1005,10 +1005,6 @@ int main(int argc, char *argv[])
                                 SDL_RenderPresent(renderer);
                             }
 
-                            tab = createTab(size);
-                            backtab = createTab(size);
-                            score = 0;
-
                             //Disable text input
                             SDL_StopTextInput();
                         }
