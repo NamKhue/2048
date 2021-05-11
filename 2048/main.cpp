@@ -1051,8 +1051,8 @@ int main(int argc, char *argv[])
     delete[] winnerList;
 
     //    //Free loaded images
-    //    gPromptTextTexture.free();
-    //    gInputTextTexture.free();
+    gPromptTextTexture.free();
+    gInputTextTexture.free();
 
     //Free global font
     TTF_CloseFont(gFont);
