@@ -12,21 +12,6 @@
 #include <stdlib.h>
 #include <string>
 
-//check there is any move
-bool checkToRandom(int **&tab, int **&backTab, int size)
-{
-	int can_put = 0;
-	for (int i = 0; i < size; ++i)
-	{
-		for (int j = 0; j < size; ++j)
-		{
-			if (tab[i][j] != backTab[i][j])
-				can_put = 1;
-		}
-	}
-	return can_put;
-}
-
 //add value 2 or 4 in a random place on board
 void randomOnBoard(int **&tab, int size)
 {

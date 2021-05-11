@@ -198,6 +198,21 @@ void copyTab(int **&tab1, int **&tab2, int size)
 	}
 }
 
+//check there is any move
+bool checkToRandom(int **&tab, int **&backTab, int size)
+{
+	int can_put = 0;
+	for (int i = 0; i < size; ++i)
+	{
+		for (int j = 0; j < size; ++j)
+		{
+			if (tab[i][j] != backTab[i][j])
+				can_put = 1;
+		}
+	}
+	return can_put;
+}
+
 //choose direction
 void move(SDL_Event event, int **&tab, int size, int **&backtab, unsigned int &score, unsigned int &backScore)
 {
