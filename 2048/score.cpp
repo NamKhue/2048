@@ -53,25 +53,6 @@ void sortByTime(PLAYERSCORE *&tab, int size)
     }
 }
 
-// create list of score for each board size
-PLAYERSCORE *createRanking(PLAYERSCORE *tab, int amount, int size, int fileSize)
-{
-    PLAYERSCORE *ranking = new PLAYERSCORE[amount];
-    int j = 0;
-    for (int i = 0; i < fileSize; i++)
-    {
-        if (tab[i].endSize == size)
-        {
-            ranking[j].endScore = tab[i].endScore;
-            ranking[j].endTime = tab[i].endTime;
-            ranking[j].endSize = tab[i].endSize;
-            ranking[j].username = tab[i].username;
-            j++;
-        }
-    }
-    return ranking;
-}
-
 void save_pretab(int **&tab, int size)
 {
     FILE *tabList;
@@ -326,13 +307,12 @@ void openPretabFile(int **&pTab, int size)
     fclose(f);
 }
 
-void savePointToFile(int score, double time, int size)
-{
-    FILE *fileList = fopen("text//winner list.txt", "a");
-    fprintf(fileList, "%u %.1lf %d\n", score, time, size);
-
-    fclose(fileList);
-}
+// void savePointToFile(int score, double time, int size)
+// {
+//     FILE *fileList = fopen("text//winner list.txt", "a");
+//     fprintf(fileList, "%u %.1lf %d\n", score, time, size);
+//     fclose(fileList);
+// }
 
 // create whole list of scores
 PLAYERSCORE *openPointFile(int &lines)
@@ -358,9 +338,28 @@ PLAYERSCORE *openPointFile(int &lines)
     fseek(fileList, 0, SEEK_SET);
     for (int i = 0; i < lines; i++)
     {
-        fscanf(fileList, "%d %lf %d %s", &list[i].endScore, &list[i].endTime, &list[i].endSize, &list[i].username);
+        fscanf(fileList, "%d %.1lf %d %s", &list[i].endScore, &list[i].endTime, &list[i].endSize, &list[i].username);
     }
     fclose(fileList);
 
     return list;
+}
+
+// create list of score for each board size
+PLAYERSCORE *createRanking(PLAYERSCORE *tab, int amount, int size, int fileSize)
+{
+    PLAYERSCORE *ranking = new PLAYERSCORE[amount];
+    int j = 0;
+    for (int i = 0; i < fileSize; i++)
+    {
+        if (tab[i].endSize == size)
+        {
+            ranking[j].endScore = tab[i].endScore;
+            ranking[j].endTime = tab[i].endTime;
+            ranking[j].endSize = tab[i].endSize;
+            ranking[j].username = tab[i].username;
+            j++;
+        }
+    }
+    return ranking;
 }
