@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string>
 #include <sstream>
+#include <iostream>
 
 #include <SDL.h>
 #include <SDL_main.h>
@@ -39,7 +40,7 @@ Mix_Music *gMusic = Mix_LoadMUS("musicBg.wav");
 //Globally used font
 TTF_Font *gFont = NULL;
 
-char text[128];
+char text[400];
 
 // changes
 
@@ -545,6 +546,21 @@ int main(int argc, char *argv[])
                         copyTab(tab, backtab, size);
                         score = backScore;
                     }
+                    else if (event.key.keysym.sym == SDLK_o)
+                    {
+                        //If the music is paused
+                        if (Mix_PausedMusic() == 1)
+                        {
+                            //Resume the music
+                            Mix_ResumeMusic();
+                        }
+                        //If the music is playing
+                        else
+                        {
+                            //Pause the music
+                            Mix_PauseMusic();
+                        }
+                    }
                     else if (event.key.keysym.sym == SDLK_p)
                     {
                         bool pause_game = 0;
@@ -700,10 +716,8 @@ int main(int argc, char *argv[])
                             SDL_FillRect(screen, NULL, lavender);
 
                             drawRectangle(screen, 20, 3, SCREEN_WIDTH - 40, 48, white, cornFlowerBlue);
-
                             sprintf(text, "Winner list for %dx%d", size, size);
                             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 14, text, char_pic);
-
                             sprintf(text, "esc - back to game, t - sort by time, p - sort by points");
                             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 30, text, char_pic);
 
@@ -731,10 +745,26 @@ int main(int argc, char *argv[])
                             {
                                 drawRectangle(screen, SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 - 190 + placeShow * 40, 400, 40, white, cornFlowerBlue);
 
-                                std::string str = sizeRanking[i].username;
-                                char name[str.length() + 1];
-                                sprintf(name, "%s", str.c_str());
-                                sprintf(text, "%d. Player: %s - time: %.1lfs - score: %d", startShow + placeShow + 1, name, sizeRanking[i].endTime, sizeRanking[i].endScore);
+                                // std::string s = sizeRanking[i].username;
+                                // char name[s.length() + 1];
+                                // sprintf(name, "%s", s.c_str());
+                                // sprintf(text, "%d. Player: %s - time: %.1lfs - score: %d", startShow + placeShow + 1, name, sizeRanking[i].endTime, sizeRanking[i].endScore);
+
+                                int num = startShow + placeShow + 1;
+                                std::string copyNum = std::to_string(num);
+                                std::string copyScore = std::to_string(sizeRanking[i].endScore);
+                                std::string copyTime = std::to_string(sizeRanking[i].endTime);
+
+                                std::string str = "";
+                                str += copyNum + ". Player: " + sizeRanking[i].username;
+                                str += " - score: " + copyScore;
+                                str += " - time: " + copyTime + " s";
+
+                                int len = str.length();
+                                for (int i = 0; i <= len; i++)
+                                {
+                                    text[i] = str[i];
+                                }
 
                                 drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 4, SCREEN_HEIGHT / 2 - 200 + 26 + placeShow * 40, text, char_pic);
 
@@ -769,21 +799,6 @@ int main(int argc, char *argv[])
                             SDL_RenderPresent(renderer);
                         }
                         delete[] sizeRanking;
-                    }
-                    else if (event.key.keysym.sym == SDLK_o)
-                    {
-                        //If the music is paused
-                        if (Mix_PausedMusic() == 1)
-                        {
-                            //Resume the music
-                            Mix_ResumeMusic();
-                        }
-                        //If the music is playing
-                        else
-                        {
-                            //Pause the music
-                            Mix_PauseMusic();
-                        }
                     }
                     break;
                 case SDL_KEYUP:
