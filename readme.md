@@ -4,6 +4,8 @@
 - MSSV: 20020110
 - Lớp: QH-2020-I/CQ-I-C-D
 
+link demo: https://youtu.be/S_0eU1EH-Rs
+
 ## <i>A mini game for mid-term project in my VNU/UET/INT2215 class</i>
 
           /\            /\       /\     /\
