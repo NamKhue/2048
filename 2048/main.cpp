@@ -445,6 +445,9 @@ int main(int argc, char *argv[])
         {
             if (contiPlaying)
             {
+                worldTime = preWorldTime[size];
+                preWorldTime[size] = 0;
+
                 contiPlaying = 0;
             }
 
@@ -463,17 +466,6 @@ int main(int argc, char *argv[])
                 frames = 0;
                 fpsTimer -= 0.5;
             };
-
-            if (preWorldTime[size] != 0)
-            {
-                worldTime = preWorldTime[size];
-                preWorldTime[size] = 0;
-            }
-            if (preFps != 0)
-            {
-                fps = preFps;
-                preFps = 0;
-            }
 
             SDL_FillRect(screen, NULL, lavender);
 
@@ -539,7 +531,6 @@ int main(int argc, char *argv[])
                         bool pause_game = 0;
 
                         preWorldTime[size] = worldTime;
-                        preFps = fps;
 
                         while (!pause_game)
                         {
@@ -548,7 +539,7 @@ int main(int argc, char *argv[])
                             // info text
                             drawRectangle(screen, 20, 3, SCREEN_WIDTH - 40, 48, white, cornFlowerBlue);
 
-                            sprintf(text, "Time: %.1lf s  %.0lf frames/s", preWorldTime[size], preFps);
+                            sprintf(text, "Time: %.1lf s  %.0lf frames/s", preWorldTime[size], fps);
                             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 14, text, char_pic);
 
                             sprintf(text, "esc - back to game");
@@ -578,7 +569,6 @@ int main(int argc, char *argv[])
                     {
                         // pause game;
                         preWorldTime[size] = worldTime;
-                        preFps = fps;
 
                         fileSize = 0;
                         winnerList = openPointFile(fileSize);
