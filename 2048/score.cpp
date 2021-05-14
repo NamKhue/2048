@@ -338,7 +338,7 @@ PLAYERSCORE *openPointFile(int &lines)
     fseek(fileList, 0, SEEK_SET);
     for (int i = 0; i < lines; i++)
     {
-        fscanf(fileList, "%d %.1lf %d %s", &list[i].endScore, &list[i].endTime, &list[i].endSize, &list[i].username);
+        fscanf(fileList, "%d %lf %d", &list[i].endScore, &list[i].endTime, &list[i].endSize);
     }
     fclose(fileList);
 
@@ -357,7 +357,6 @@ PLAYERSCORE *createRanking(PLAYERSCORE *tab, int amount, int size, int fileSize)
             ranking[j].endScore = tab[i].endScore;
             ranking[j].endTime = tab[i].endTime;
             ranking[j].endSize = tab[i].endSize;
-            ranking[j].username = tab[i].username;
             j++;
         }
     }

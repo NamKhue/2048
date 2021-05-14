@@ -60,15 +60,6 @@ public:
     //Deallocates texture
     void free();
 
-    //Set color modulation
-    void setColor(Uint8 red, Uint8 green, Uint8 blue);
-
-    //Set blending
-    void setBlendMode(SDL_BlendMode blending);
-
-    //Set alpha modulation
-    void setAlpha(Uint8 alpha);
-
     //Renders texture at given point
     void render(int x, int y, SDL_Rect *clip = NULL, double angle = 0.0, SDL_Point *center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
@@ -147,24 +138,6 @@ void LTexture::free()
         mWidth = 0;
         mHeight = 0;
     }
-}
-
-void LTexture::setColor(Uint8 red, Uint8 green, Uint8 blue)
-{
-    //Modulate texture rgb
-    SDL_SetTextureColorMod(mTexture, red, green, blue);
-}
-
-void LTexture::setBlendMode(SDL_BlendMode blending)
-{
-    //Set blending function
-    SDL_SetTextureBlendMode(mTexture, blending);
-}
-
-void LTexture::setAlpha(Uint8 alpha)
-{
-    //Modulate texture alpha
-    SDL_SetTextureAlphaMod(mTexture, alpha);
 }
 
 void LTexture::render(int x, int y, SDL_Rect *clip, double angle, SDL_Point *center, SDL_RendererFlip flip)
@@ -328,7 +301,7 @@ int main(int argc, char *argv[])
     PLAYERSCORE *winnerList;
 
     int t1, t2, quit, frames;
-    double delta, worldTime, preWorldTime, fpsTimer, fps, preFps;
+    double delta, worldTime, preWorldTime[8], fpsTimer, fps, preFps;
 
     char username[200];
 
@@ -491,10 +464,10 @@ int main(int argc, char *argv[])
                 fpsTimer -= 0.5;
             };
 
-            if (preWorldTime != 0)
+            if (preWorldTime[size] != 0)
             {
-                worldTime = preWorldTime;
-                preWorldTime = 0;
+                worldTime = preWorldTime[size];
+                preWorldTime[size] = 0;
             }
             if (preFps != 0)
             {
@@ -530,7 +503,7 @@ int main(int argc, char *argv[])
                     if (event.key.keysym.sym == SDLK_ESCAPE)
                     {
                         save_pretab(tab, size);
-                        preWorldTime = worldTime;
+                        preWorldTime[size] = worldTime;
 
                         getStart = 0;
                     }
@@ -565,7 +538,7 @@ int main(int argc, char *argv[])
                     {
                         bool pause_game = 0;
 
-                        preWorldTime = worldTime;
+                        preWorldTime[size] = worldTime;
                         preFps = fps;
 
                         while (!pause_game)
@@ -575,10 +548,10 @@ int main(int argc, char *argv[])
                             // info text
                             drawRectangle(screen, 20, 3, SCREEN_WIDTH - 40, 48, white, cornFlowerBlue);
 
-                            sprintf(text, "Time: %.1lf s  %.0lf frames/s", preWorldTime, preFps);
+                            sprintf(text, "Time: %.1lf s  %.0lf frames/s", preWorldTime[size], preFps);
                             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 14, text, char_pic);
 
-                            sprintf(text, "esc - back to game, r - rankings");
+                            sprintf(text, "esc - back to game");
                             drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 30, text, char_pic);
 
                             while (SDL_PollEvent(&event))
@@ -588,95 +561,6 @@ int main(int argc, char *argv[])
                                 case SDL_KEYDOWN:
                                     if (event.key.keysym.sym == SDLK_ESCAPE)
                                         pause_game = 1;
-                                    else if (event.key.keysym.sym == SDLK_r)
-                                    {
-                                        // SHOW RANKING WINDOW
-                                        bool show_ranking = 0;
-                                        int amountBoard = 0;
-                                        int startShow = 0;
-                                        int limit = 10;
-
-                                        for (int i = 0; i < fileSize; i++)
-                                            if (size == winnerList[i].endSize)
-                                                amountBoard++;
-
-                                        PLAYERSCORE *sizeRanking = createRanking(winnerList, amountBoard, size, fileSize);
-
-                                        while (!show_ranking)
-                                        {
-                                            SDL_FillRect(screen, NULL, lavender);
-
-                                            drawRectangle(screen, 20, 3, SCREEN_WIDTH - 40, 48, white, cornFlowerBlue);
-
-                                            sprintf(text, "Winner list for %dx%d", size, size);
-                                            drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 14, text, char_pic);
-
-                                            sprintf(text, "esc - back to game, t - sort by time, p - sort by points");
-                                            drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 8 / 2, 30, text, char_pic);
-
-                                            // set start of ranking
-                                            if (startShow <= 0)
-                                                startShow = 0;
-                                            if (startShow >= amountBoard - 10)
-                                                startShow = amountBoard - 10;
-                                            if (amountBoard <= 10)
-                                            {
-                                                startShow = 0;
-                                                limit = amountBoard;
-                                            }
-
-                                            // check the winner list
-                                            if (fileSize == 0 || limit == 0)
-                                            {
-                                                drawRectangle(screen, 140, SCREEN_HEIGHT / 2, SCREEN_WIDTH - 280, 40, white, cornFlowerBlue);
-                                                sprintf(text, "Winner list in empty");
-                                                drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 4, SCREEN_HEIGHT / 2 + 16, text, char_pic);
-                                            }
-
-                                            int placeShow = 0;
-                                            for (int i = startShow; placeShow < limit; i++)
-                                            {
-                                                drawRectangle(screen, SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 - 190 + placeShow * 40, 400, 40, white, cornFlowerBlue);
-
-                                                std::string str = sizeRanking[i].username;
-                                                char name[str.length() + 1];
-                                                sprintf(name, "%s", str.c_str());
-                                                sprintf(text, "%d. Player: %s - time: %.1lfs - score: %d", startShow + placeShow + 1, name, sizeRanking[i].endTime, sizeRanking[i].endScore);
-
-                                                drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 4, SCREEN_HEIGHT / 2 - 200 + 26 + placeShow * 40, text, char_pic);
-
-                                                placeShow++;
-                                            }
-
-                                            while (SDL_PollEvent(&event))
-                                            {
-                                                switch (event.type)
-                                                {
-                                                case SDL_KEYDOWN:
-                                                    if (event.key.keysym.sym == SDLK_ESCAPE)
-                                                        show_ranking = 1;
-                                                    if (event.key.keysym.sym == SDLK_t)
-                                                        sortByTime(sizeRanking, amountBoard);
-                                                    if (event.key.keysym.sym == SDLK_p)
-                                                        sortByScore(sizeRanking, amountBoard);
-                                                    else if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w)
-                                                        startShow++;
-                                                    else if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s)
-                                                        startShow--;
-                                                    break;
-                                                case SDL_QUIT:
-                                                    quit = 1;
-                                                    show_ranking = 1;
-                                                    break;
-                                                };
-                                            };
-
-                                            SDL_UpdateTexture(scrtex, NULL, screen->pixels, screen->pitch);
-                                            SDL_RenderCopy(renderer, scrtex, NULL, NULL);
-                                            SDL_RenderPresent(renderer);
-                                        }
-                                        delete[] sizeRanking;
-                                    }
                                     break;
                                 case SDL_QUIT:
                                     quit = 1;
@@ -693,7 +577,7 @@ int main(int argc, char *argv[])
                     else if (event.key.keysym.sym == SDLK_r)
                     {
                         // pause game;
-                        preWorldTime = worldTime;
+                        preWorldTime[size] = worldTime;
                         preFps = fps;
 
                         fileSize = 0;
@@ -745,26 +629,7 @@ int main(int argc, char *argv[])
                             {
                                 drawRectangle(screen, SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 - 190 + placeShow * 40, 400, 40, white, cornFlowerBlue);
 
-                                // std::string s = sizeRanking[i].username;
-                                // char name[s.length() + 1];
-                                // sprintf(name, "%s", s.c_str());
-                                // sprintf(text, "%d. Player: %s - time: %.1lfs - score: %d", startShow + placeShow + 1, name, sizeRanking[i].endTime, sizeRanking[i].endScore);
-
-                                int num = startShow + placeShow + 1;
-                                std::string copyNum = std::to_string(num);
-                                std::string copyScore = std::to_string(sizeRanking[i].endScore);
-                                std::string copyTime = std::to_string(sizeRanking[i].endTime);
-
-                                std::string str = "";
-                                str += copyNum + ". Player: " + sizeRanking[i].username;
-                                str += " - score: " + copyScore;
-                                str += " - time: " + copyTime + " s";
-
-                                int len = str.length();
-                                for (int i = 0; i <= len; i++)
-                                {
-                                    text[i] = str[i];
-                                }
+                                sprintf(text, "%d. Your time: %.1lfs Your score: %d", startShow + placeShow + 1, sizeRanking[i].endTime, sizeRanking[i].endScore);
 
                                 drawString(screen, SCREEN_WIDTH / 2 - strlen(text) * 4, SCREEN_HEIGHT / 2 - 200 + 26 + placeShow * 40, text, char_pic);
 
@@ -1065,7 +930,7 @@ int main(int argc, char *argv[])
 
     delete[] winnerList;
 
-    //    //Free loaded images
+    //Free loaded images
     gPromptTextTexture.free();
     gInputTextTexture.free();
 
